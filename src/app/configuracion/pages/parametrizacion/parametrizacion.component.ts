@@ -1,22 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { ConfiguracionService } from '../../../services/configuracion/parametrizacion.service';
-
-export interface Guardado {
-  success: boolean;
-  message: string;
-  data: {
-    token: string;
-    id: number;
-  };
-}
 
 @Component({
   selector: 'app-parametrizacion',
@@ -26,7 +13,7 @@ export interface Guardado {
   styleUrl: './parametrizacion.component.css',
 })
 export class ParametrizacionComponent {
-  constructor(private configuracionService: ConfiguracionService) {}
+  constructor(private configuracionService: ConfiguracionService) { }
   isActive: boolean = false;
   isEditable = false;
 
@@ -47,11 +34,8 @@ export class ParametrizacionComponent {
   sitionombre = '';
   Mantenimiento = '';
 
-  toggleEdit(): void {
-    this.isEditable = !this.isEditable;
-  }
 
-  callUrl() {
+  PlatformCall() {
     const json = {
       logo: this.logo,
       color: this.color,
@@ -68,11 +52,12 @@ export class ParametrizacionComponent {
       Mantenimiento: this.Mantenimiento,
       maximointentos: this.maximointentos
     };
-
-    this.configuracionService.updateConfiguracion(1, json).subscribe({
+    console.log("Json -->", json )
+    this.configuracionService.updatePlatform(json).subscribe({
       next: (response) =>
         console.log('✅ Positiva la respuesta del backend:', response),
-      error: (err) => console.error('❌ Error:', err),
+      error: (err) =>
+         console.error('❌ Error:', err),
     });
   }
 
@@ -85,9 +70,7 @@ export class ParametrizacionComponent {
     { nombre: 'Proveedores', activo: false },
   ];
 
-  toggleModulo(modulo: any): void {
-    modulo.activo = !modulo.activo;
-  }
+ 
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ha ocurrido un error inesperado';
@@ -106,5 +89,12 @@ export class ParametrizacionComponent {
 
     console.error('AuthService Error:', error);
     return throwError(() => new Error(errorMessage));
+  }
+
+   toggleEdit(): void {
+    this.isEditable = !this.isEditable;
+  }
+   toggleModulo(modulo: any): void {
+    modulo.activo = !modulo.activo;
   }
 }

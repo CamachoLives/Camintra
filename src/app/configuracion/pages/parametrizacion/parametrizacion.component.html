@@ -119,22 +119,21 @@
       </div>
     </fieldset>
 
-    <div class="flex items-center justify-between p-4 border rounded shadow-sm">
+    <!-- <div class="flex items-center justify-between p-4 border rounded shadow-sm">
       <span class="text-gray-700 font-medium">Modo Mantenimiento</span>
-
       <button (click)="isActive = !isActive" [disabled]="!isEditable" [(ngModel)]="Mantenimiento" name="Mantenimiento"
         class="text-white font-semibold py-1 px-4 rounded transition-colors duration-300"
         [ngClass]="isActive ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 hover:bg-gray-500'">
         {{ isActive ? 'Activo' : 'Inactivo' }}
       </button>
-    </div>
+    </div> -->
 
     <div class="flex justify-end items-end space-x-4">
       <button type="submit" (click)="toggleEdit()" [hidden]="!isEditable"
         class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Cancelar
       </button>
-      <button type="submit" (click)="callUrl()" [hidden]="!isEditable"
+      <button type="submit" (click)="PlatformCall()" [hidden]="!isEditable"
         class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Guardar
       </button>
