@@ -5,30 +5,12 @@
       Plataforma
     </h2>
     <!-- Botón para habilitar edición -->
-    <button
-      type="button"
-      (click)="toggleEdit()"
-      class="p-2 hover:bg-gray-200 rounded"
-      [hidden]="isEditable"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M16.862 4.487a2.25 2.25 0 0 1 3.182 3.182L7.5 20.213l-4.5.75.75-4.5L16.862 4.487z"
-        />
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M19.5 7.5l-3-3"
-        />
+    <button type="button" (click)="toggleEdit()" class="p-2 hover:bg-gray-200 rounded" [hidden]="isEditable">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.862 4.487a2.25 2.25 0 0 1 3.182 3.182L7.5 20.213l-4.5.75.75-4.5L16.862 4.487z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5l-3-3" />
       </svg>
     </button>
   </div>
@@ -37,54 +19,50 @@
     <!-- Logo -->
     <div>
       <label class="block text-gray-600 mb-2 font-bold">Logo</label>
-      <input
-        type="file"
-        [disabled]="!isEditable"
-        id="logo"
-        [(ngModel)]="logo"
-        name="logo"
-        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-      />
+      <input type="file" [disabled]="!isEditable" id="logo" [(ngModel)]="logo" name="logo"
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+    </div>
+
+    <!-- Favicon -->
+    <div>
+      <label class="block text-gray-600 mb-2 font-bold">Favicon</label>
+      <input type="file" [disabled]="!isEditable" id="logo" [(ngModel)]="favicon" name="favicon"
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
     </div>
 
     <!-- Color -->
     <div>
-      <label class="block text-gray-600 mb-2 font-bold"
-        >Color de la plataforma</label
-      >
-      <input
-        type="color"
-        id="color"
-        [(ngModel)]="color"
-        name="color"
-        [disabled]="!isEditable"
-        class="w-16 h-10 border rounded"
-      />
+      <label class="block text-gray-600 mb-2 font-bold">Color de la plataforma</label>
+      <input type="color" id="color" [(ngModel)]="color" name="color" [disabled]="!isEditable"
+        class="w-16 h-10 border rounded" />
+    </div>
+
+    <!-- Nombre del Sitio -->
+    <div>
+      <label class="block text-gray-600 mb-2 font-bold">Nombre del Sitio</label>
+      <input type="text" [disabled]="!isEditable" [(ngModel)]="sitionombre" name="sitionombre" placeholder="Mi sitio"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Ruta -->
     <div>
-      <label class="block text-gray-600 mb-2 font-bold"
-        >Ruta de almacenamiento</label
-      >
-      <input
-        type="text"
-        [disabled]="!isEditable"
-        [(ngModel)]="path"
-        name="path"
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+      <label class="block text-gray-600 mb-2 font-bold">Ruta de almacenamiento</label>
+      <input type="text" [disabled]="!isEditable" [(ngModel)]="path" name="path" placeholder="C:\MiServidor\Datos\Almacenamiento"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Email de Soporte -->
+    <div>
+      <label class="block text-gray-600 mb-2 font-bold">Email de Soporte</label>
+      <input type="text" [disabled]="!isEditable" [(ngModel)]="emailsoporte" name="emailsoporte" placeholder="MiCorreo@midominio.com"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Idioma -->
     <div>
       <label class="block text-gray-600 mb-2 font-bold">Idioma</label>
-      <select
-        [disabled]="!isEditable"
-        [(ngModel)]="idioma"
-        name="idioma"
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
+      <select [disabled]="!isEditable" [(ngModel)]="idioma" name="idioma" aria-placeholder="Español"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="es">Español</option>
         <option value="en">Inglés</option>
         <option value="fr">Francés</option>
@@ -93,51 +71,26 @@
 
     <!-- Tiempo de sesión -->
     <div>
-      <label class="block text-gray-600 mb-2 font-bold"
-        >Tiempo de sesión (minutos)</label
-      >
-      <input
-        type="number"
-        [disabled]="!isEditable"
-        [(ngModel)]="tiemposesion"
-        name="tiemposesion"
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+      <label class="block text-gray-600 mb-2 font-bold">Tiempo de sesión (minutos)</label>
+      <input type="number" [disabled]="!isEditable" [(ngModel)]="tiemposesion" name="tiemposesion" placeholder="30"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Toggles -->
     <div class="grid grid-cols-2 gap-4">
       <label class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          [disabled]="!isEditable"
-          class="h-5 w-5 text-blue-600 font-bold"
-          [(ngModel)]="autenticacion"
-          name="autenticacion"
-          value="false"
-        />
+        <input type="checkbox" [disabled]="!isEditable" class="h-5 w-5 text-blue-600 font-bold"
+          [(ngModel)]="autenticacion" name="autenticacion" value="false" />
         <span>Autenticación FA2</span>
       </label>
       <label class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          [disabled]="!isEditable"
-          class="h-5 w-5 text-blue-600 font-bold"
-          [(ngModel)]="dashboard"
-          name="dashboard"
-          value="false"
-        />
+        <input type="checkbox" [disabled]="!isEditable" class="h-5 w-5 text-blue-600 font-bold" [(ngModel)]="dashboard"
+          name="dashboard" value="false" />
         <span>Dashboard</span>
       </label>
       <label class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          [disabled]="!isEditable"
-          class="h-5 w-5 text-blue-600 font-bold"
-          [(ngModel)]="carousel"
-          name="carousel"
-          value="false"
-        />
+        <input type="checkbox" [disabled]="!isEditable" class="h-5 w-5 text-blue-600 font-bold" [(ngModel)]="carousel"
+          name="carousel" value="false" />
         <span>Carousel</span>
       </label>
     </div>
@@ -149,47 +102,40 @@
       </legend>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-600 mb-2 font-bold"
-            >Longitud mínima</label
-          >
-          <input
-            type="number"
-            [disabled]="!isEditable"
-            [(ngModel)]="longitudminimapass"
-            name="longitudminimapass"
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <label class="block text-gray-600 mb-2 font-bold">Longitud mínima</label>
+          <input type="number" [disabled]="!isEditable" [(ngModel)]="longitudminimapass" name="longitudminimapass" placeholder="8"
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
         <div>
-          <label class="block text-gray-600 mb-2 font-bold"
-            >Caducidad (días)</label
-          >
-          <input
-            type="number"
-            [disabled]="!isEditable"
-            [(ngModel)]="caducidad"
-            name="caducidad"
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <label class="block text-gray-600 mb-2 font-bold">Maximo de intentos</label>
+          <input type="number" [disabled]="!isEditable" [(ngModel)]="maximointentos" name="maximointentos" placeholder="5"
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-2 font-bold">Caducidad (días)</label>
+          <input type="number" [disabled]="!isEditable" [(ngModel)]="caducidad" name="caducidad" placeholder="29"
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
       </div>
     </fieldset>
 
+    <div class="flex items-center justify-between p-4 border rounded shadow-sm">
+      <span class="text-gray-700 font-medium">Modo Mantenimiento</span>
+
+      <button (click)="isActive = !isActive" [disabled]="!isEditable" [(ngModel)]="Mantenimiento" name="Mantenimiento"
+        class="text-white font-semibold py-1 px-4 rounded transition-colors duration-300"
+        [ngClass]="isActive ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 hover:bg-gray-500'">
+        {{ isActive ? 'Activo' : 'Inactivo' }}
+      </button>
+    </div>
+
     <div class="flex justify-end items-end space-x-4">
-      <button
-        type="submit"
-        (click)="toggleEdit()"
-        [hidden]="!isEditable"
-        class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out"
-      >
+      <button type="submit" (click)="toggleEdit()" [hidden]="!isEditable"
+        class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Cancelar
       </button>
-      <button
-        type="submit"
-        (click)="callUrl()"
-        [hidden]="!isEditable"
-        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out"
-      >
+      <button type="submit" (click)="callUrl()" [hidden]="!isEditable"
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Guardar
       </button>
     </div>
@@ -200,42 +146,22 @@
   <div class="flex justify-between items-center">
     <h2 class="text-4xl font-bold mb-6 text-gray-700 text-center">Módulos</h2>
     <button>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M16.862 4.487a2.25 2.25 0 0 1 3.182 3.182L7.5 20.213l-4.5.75.75-4.5L16.862 4.487z"
-        />
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M19.5 7.5l-3-3"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.862 4.487a2.25 2.25 0 0 1 3.182 3.182L7.5 20.213l-4.5.75.75-4.5L16.862 4.487z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5l-3-3" />
       </svg>
     </button>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-    <div
-      *ngFor="let modulo of modulos"
-      class="flex items-center justify-between p-4 border rounded"
-    >
+    <div *ngFor="let modulo of modulos" class="flex items-center justify-between p-4 border rounded">
       <span class="text-gray-700 font-medium">{{ modulo.nombre }}</span>
-      <button
-        (click)="toggleModulo(modulo)"
-        [ngClass]="
+      <button (click)="toggleModulo(modulo)" [ngClass]="
           modulo.activo
             ? 'bg-green-500 hover:bg-green-600'
             : 'bg-gray-400 hover:bg-gray-500'
-        "
-        class="text-white font-semibold py-1 px-3 rounded transition-colors duration-300"
-      >
+        " class="text-white font-semibold py-1 px-3 rounded transition-colors duration-300">
         {{ modulo.activo ? "Activo" : "Inactivo" }}
       </button>
     </div>

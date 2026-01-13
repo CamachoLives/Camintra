@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-menu-dashboard": {
+    "Camintra": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ng-menu-dashboard",
+            "outputPath": "dist/Camintra",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-menu-dashboard:build:production"
+              "buildTarget": "Camintra:build:production"
             },
             "development": {
-              "buildTarget": "ng-menu-dashboard:build:development"
+              "buildTarget": "Camintra:build:development"
             }
           },
           "defaultConfiguration": "development"

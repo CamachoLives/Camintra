@@ -27,18 +27,25 @@ export interface Guardado {
 })
 export class ParametrizacionComponent {
   constructor(private configuracionService: ConfiguracionService) {}
-
+  isActive: boolean = false;
   isEditable = false;
+
+  // Variables del formulario
   logo = '';
+  favicon = '';
   color = '';
   path = '';
   idioma = '';
   caducidad = '';
   longitudminimapass = '';
+  maximointentos = '';
   carousel = '';
   dashboard = '';
   autenticacion = '';
   tiemposesion = '';
+  emailsoporte = '';
+  sitionombre = '';
+  Mantenimiento = '';
 
   toggleEdit(): void {
     this.isEditable = !this.isEditable;
@@ -55,6 +62,11 @@ export class ParametrizacionComponent {
       dashboard: this.dashboard,
       autenticacion: this.autenticacion,
       tiemposesion: this.tiemposesion,
+      emailsoporte: this.emailsoporte,
+      sitionombre: this.sitionombre,
+      favicon: this.favicon,
+      Mantenimiento: this.Mantenimiento,
+      maximointentos: this.maximointentos
     };
 
     this.configuracionService.updateConfiguracion(1, json).subscribe({

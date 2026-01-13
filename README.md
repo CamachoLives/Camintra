@@ -33,7 +33,7 @@ Wiki 📖
 Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra Wiki
 
 Versionado 📌
-NexIn 1.0
+CAMINTRA 1.0
 
 Autores ✒️
 Luis Villamizar - Desarrollador Front-end
