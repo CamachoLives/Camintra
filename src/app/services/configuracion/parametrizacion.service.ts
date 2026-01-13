@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ConfiguracionService {
-  private apiUrl = 'http://localhost:7200/parametrizacion';
+  private apiUrl = 'http://localhost:7000/parametrizacion';
 
   constructor(private http: HttpClient) {}
 
