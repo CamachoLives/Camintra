@@ -29,7 +29,7 @@ app-root, .login-wrapper {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../../../assets/net1.jpg');
+  background-image: url('../../../assets/net.jpg');
   background-size: cover;
   background-position: center;
   filter: blur(10px);
@@ -89,8 +89,8 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #1c99ec;
-  background-color: #4164ff;
+  border: 1px solid #928484;
+  background-color: #8b28c4;
   color: #FFFFFF;
   font-size: 12px;
   font-weight: bold;
@@ -204,9 +204,9 @@ input {
 }
 
 .overlay {
-  background: #4164ff;
-  background: -webkit-linear-gradient(to right, #4164ff, #0c4f5f);
-  background: linear-gradient(to right, #0c4f5f, #4164ff);
+  background: #b941ff;
+  background: -webkit-linear-gradient(to right, #9a41ff, #0c4f5f);
+  background: linear-gradient(to right, #0c4f5f, #9a41ff);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -330,3 +330,50 @@ footer a {
     padding: 10px;
   }
 }
+
+
+
+.outlined-input {
+  position: relative;
+  margin-top: 20px;
+}
+
+.outlined-input {
+  position: relative;
+  margin-top: 20px;
+}
+
+.outlined-input input {
+  width: 100%;
+  padding: 14px 40px;
+  font-size: 16px;
+  border: 1.5px solid #999;
+  border-radius: 6px;
+  outline: none;
+}
+
+.outlined-input label {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  padding: 0 6px;
+  font-size: 14px;
+  color: #777;
+  transform: translateY(-50%);
+  transition: 0.2s ease;
+  pointer-events: none;
+}
+
+/* Cuando el input tiene foco o contenido */
+.outlined-input input:focus + label,
+.outlined-input input:valid + label {
+  top: 0;
+  font-size: 12px;
+  color: #a73fb5;
+}
+
+/* Cambio de color del borde */
+.outlined-input input:focus {
+  border-color: #a73fb5;
+}
+
