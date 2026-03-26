@@ -8,9 +8,9 @@ import { CommonModule } from '@angular/common';
 })
 export class CarouselComponent {
   images = [
-    '/assets/1.jpg',
+    '/assets/3.jpg',
     '/assets/2.jpg',
-    '/assets/3.jpg'
+    '/assets/1.jpg'
   ];
   currentIndex = 0;
 
