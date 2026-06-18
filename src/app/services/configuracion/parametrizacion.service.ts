@@ -17,7 +17,6 @@ export class ConfiguracionService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-
     return this.http.post(`${this.apiUrl}/plataforma`, { 
       headers, data 
     }).pipe(catchError(this.handleError));
@@ -27,6 +26,7 @@ export class ConfiguracionService {
     let errorMessage = 'Ha ocurrido un error inesperado';
 
     if (error.error instanceof ErrorEvent) {
+
       errorMessage = `Error: ${error.error.message}`;
     } else {
       if (error.error && error.error.message) {
