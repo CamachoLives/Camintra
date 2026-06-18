@@ -23,7 +23,6 @@ export class ConfiguracionService {
     }).pipe(catchError(this.handleError));
   }
 
-  
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ha ocurrido un error inesperado';
 
