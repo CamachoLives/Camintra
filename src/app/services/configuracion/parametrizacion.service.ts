@@ -17,6 +17,7 @@ export class ConfiguracionService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
+    
     return this.http.post(`${this.apiUrl}/plataforma`, { 
       headers, data 
     }).pipe(catchError(this.handleError));
