@@ -17,12 +17,13 @@ export class ConfiguracionService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    
+
     return this.http.post(`${this.apiUrl}/plataforma`, { 
       headers, data 
     }).pipe(catchError(this.handleError));
   }
 
+  
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ha ocurrido un error inesperado';
 
