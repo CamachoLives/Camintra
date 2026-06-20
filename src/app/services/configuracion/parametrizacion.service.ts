@@ -21,8 +21,7 @@ export class ConfiguracionService {
     return this.http.post(`${this.apiUrl}/plataforma`, { 
       headers, data 
     }).pipe(catchError(this.handleError));
-  }
-
+  }s
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ha ocurrido un error inesperado';
 
