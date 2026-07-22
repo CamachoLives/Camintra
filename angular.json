@@ -29,6 +29,7 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
+              
             }
           },
           "configurations": {
