@@ -1,0 +1,152 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Directorio</h1>
+    <p class="text-sm text-gray-500">
+      {{ total() }} colaborador(es) activo(s)
+    </p>
+  </div>
+
+  <!-- Buscador -->
+  <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <div class="flex flex-wrap gap-3">
+      <input
+        [(ngModel)]="busqueda"
+        (keyup.enter)="cargar()"
+        type="text"
+        placeholder="Buscar por nombre, correo o cargo"
+        class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+      />
+
+      <button
+        (click)="cargar()"
+        class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+      >
+        Buscar
+      </button>
+
+      <button
+        (click)="limpiar()"
+        class="text-sm text-gray-500 underline hover:text-gray-900"
+      >
+        Limpiar
+      </button>
+    </div>
+
+    <!-- Chips de departamento -->
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button
+        (click)="filtrarPorDepartamento(null)"
+        class="rounded-full px-3 py-1 text-xs font-semibold transition"
+        [ngClass]="
+          departamentoId === null
+            ? 'bg-gray-900 text-white'
+            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+        "
+      >
+        Todos
+      </button>
+
+      <button
+        *ngFor="let dep of departamentos()"
+        (click)="filtrarPorDepartamento(dep.id)"
+        class="rounded-full px-3 py-1 text-xs font-semibold transition"
+        [ngClass]="
+          departamentoId === dep.id
+            ? 'text-white'
+            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+        "
+        [style.background-color]="
+          departamentoId === dep.id ? dep.color_hex : null
+        "
+      >
+        {{ dep.nombre }}
+        <span class="opacity-70">({{ dep.total_colaboradores }})</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="cargando()" class="py-12 text-center text-gray-500">
+    Cargando directorio...
+  </div>
+
+  <div
+    *ngIf="error()"
+    class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+  >
+    {{ error() }}
+  </div>
+
+  <div
+    *ngIf="!cargando() && !error() && colaboradores().length === 0"
+    class="rounded-xl border border-dashed border-gray-300 py-12 text-center text-gray-500"
+  >
+    No se encontraron colaboradores.
+  </div>
+
+  <!-- Tarjetas -->
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <a
+      *ngFor="let c of colaboradores()"
+      [routerLink]="['/directorio', c.usuario_id]"
+      class="flex items-start gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+    >
+      <img
+        *ngIf="c.imagen_url"
+        [src]="c.imagen_url"
+        [alt]="c.nombre"
+        class="h-14 w-14 shrink-0 rounded-full object-cover"
+      />
+
+      <div
+        *ngIf="!c.imagen_url"
+        class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white"
+        [style.background-color]="c.departamento_color || '#374151'"
+      >
+        {{ iniciales(c.nombre) }}
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h2 class="truncate font-semibold text-gray-900">{{ c.nombre }}</h2>
+        <p class="truncate text-sm text-gray-600">{{ c.cargo }}</p>
+
+        <span
+          *ngIf="c.departamento"
+          class="mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-semibold text-white"
+          [style.background-color]="c.departamento_color"
+        >
+          {{ c.departamento }}
+        </span>
+
+        <p class="mt-2 truncate text-xs text-gray-500">{{ c.email }}</p>
+        <p *ngIf="c.extension" class="text-xs text-gray-500">
+          Ext. {{ c.extension }}
+        </p>
+      </div>
+    </a>
+  </div>
+
+  <div
+    *ngIf="totalPaginas() > 1"
+    class="flex items-center justify-center gap-3 pt-2"
+  >
+    <button
+      [disabled]="pagina() === 1"
+      (click)="cargar(pagina() - 1)"
+      class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-40"
+    >
+      Anterior
+    </button>
+
+    <span class="text-sm text-gray-600">
+      Página {{ pagina() }} de {{ totalPaginas() }}
+    </span>
+
+    <button
+      [disabled]="pagina() === totalPaginas()"
+      (click)="cargar(pagina() + 1)"
+      class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-40"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

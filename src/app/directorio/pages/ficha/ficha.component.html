@@ -1,0 +1,211 @@
+<div class="mx-auto max-w-3xl space-y-6">
+  <a
+    routerLink="/directorio"
+    class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900"
+  >
+    &larr; Volver al directorio
+  </a>
+
+  <div *ngIf="cargando()" class="py-12 text-center text-gray-500">
+    Cargando ficha...
+  </div>
+
+  <div
+    *ngIf="error()"
+    class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+  >
+    {{ error() }}
+  </div>
+
+  <div
+    *ngIf="mensaje()"
+    class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700"
+  >
+    {{ mensaje() }}
+  </div>
+
+  <div
+    *ngIf="colaborador() as c"
+    class="rounded-xl border border-gray-200 bg-white shadow-sm"
+  >
+    <!-- Cabecera -->
+    <div class="flex items-center gap-5 border-b border-gray-200 p-6">
+      <img
+        *ngIf="c.imagen_url"
+        [src]="c.imagen_url"
+        [alt]="c.nombre"
+        class="h-20 w-20 rounded-full object-cover"
+      />
+
+      <div
+        *ngIf="!c.imagen_url"
+        class="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white"
+        [style.background-color]="c.departamento_color || '#374151'"
+      >
+        {{ iniciales(c.nombre) }}
+      </div>
+
+      <div class="min-w-0">
+        <h1 class="truncate text-2xl font-bold text-gray-900">{{ c.nombre }}</h1>
+        <p class="text-gray-600">{{ c.cargo }}</p>
+
+        <span
+          *ngIf="c.departamento"
+          class="mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold text-white"
+          [style.background-color]="c.departamento_color"
+        >
+          {{ c.departamento }}
+        </span>
+      </div>
+
+      <button
+        *ngIf="puedeEditar() && !editando()"
+        (click)="editar()"
+        class="ml-auto shrink-0 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+      >
+        Editar ficha
+      </button>
+    </div>
+
+    <!-- Vista -->
+    <dl *ngIf="!editando()" class="grid gap-x-8 gap-y-4 p-6 sm:grid-cols-2">
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Correo</dt>
+        <dd class="text-sm text-gray-900">{{ c.email }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Extensión</dt>
+        <dd class="text-sm text-gray-900">{{ c.extension || '—' }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Celular</dt>
+        <dd class="text-sm text-gray-900">{{ c.celular || '—' }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Sede</dt>
+        <dd class="text-sm text-gray-900">{{ c.sede || '—' }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Ingreso</dt>
+        <dd class="text-sm text-gray-900">
+          {{ (c.fecha_ingreso | date: 'dd MMMM yyyy') || '—' }}
+        </dd>
+      </div>
+
+      <div>
+        <dt class="text-xs uppercase tracking-wide text-gray-500">
+          Jefe inmediato
+        </dt>
+        <dd class="text-sm text-gray-900">{{ c.jefe || '—' }}</dd>
+      </div>
+
+      <div class="sm:col-span-2" *ngIf="c.biografia">
+        <dt class="text-xs uppercase tracking-wide text-gray-500">Acerca de</dt>
+        <dd class="text-sm leading-relaxed text-gray-800">{{ c.biografia }}</dd>
+      </div>
+    </dl>
+
+    <!-- Edición -->
+    <form
+      *ngIf="editando()"
+      class="space-y-4 p-6"
+      (ngSubmit)="guardar()"
+    >
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Cargo</label>
+          <input
+            [(ngModel)]="modelo.cargo"
+            name="cargo"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">
+            Departamento
+          </label>
+          <select
+            [(ngModel)]="modelo.departamento_id"
+            name="departamento_id"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          >
+            <option [ngValue]="null">Sin asignar</option>
+            <option *ngFor="let dep of departamentos()" [ngValue]="dep.id">
+              {{ dep.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">
+            Extensión
+          </label>
+          <input
+            [(ngModel)]="modelo.extension"
+            name="extension"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">
+            Celular
+          </label>
+          <input
+            [(ngModel)]="modelo.celular"
+            name="celular"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Sede</label>
+          <input
+            [(ngModel)]="modelo.sede"
+            name="sede"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">
+            Fecha de ingreso
+          </label>
+          <input
+            [(ngModel)]="modelo.fecha_ingreso"
+            name="fecha_ingreso"
+            type="date"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-900 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="flex gap-3 border-t border-gray-200 pt-4">
+        <button
+          type="submit"
+          [disabled]="guardando()"
+          class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700 disabled:opacity-50"
+        >
+          {{ guardando() ? 'Guardando...' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="cancelar()"
+          class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

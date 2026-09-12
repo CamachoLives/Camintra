@@ -26,6 +26,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'directorio',
+        loadChildren: () =>
+          import('./directorio/directorio.module').then(
+            (m) => m.DirectorioModule
+          ),
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
