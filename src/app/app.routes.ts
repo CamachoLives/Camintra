@@ -19,6 +19,13 @@ export const routes: Routes = [
           import('./Inicio/inicio.module').then((m) => m.inicioModule),
       },
       {
+        path: 'comunicados',
+        loadChildren: () =>
+          import('./comunicados/comunicados.module').then(
+            (m) => m.ComunicadosModule
+          ),
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
