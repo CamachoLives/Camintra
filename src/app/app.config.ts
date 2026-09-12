@@ -1,12 +1,14 @@
 // app.config.ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
-    importProvidersFrom(HttpClientModule) // ✅ Aquí
-  ]
+    provideRouter(routes, withComponentInputBinding()),
+    // withFetch para que SSR no se queje del cliente XHR
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+  ],
 };

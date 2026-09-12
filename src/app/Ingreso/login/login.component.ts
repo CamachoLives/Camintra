@@ -34,18 +34,11 @@ export default class LoginComponent {
 
   onLogin() {
     this.authService.login(this.email, this.password).subscribe({
-      next: (res) => {
-        this.authService.saveToken(res.data.token);
-        this.userService.setUser(
-          {
-            id: res.data.id,
-          },
-          3600
-        );
+      next: () => {
         this.router.navigate(['/Inicio']);
       },
       error: (err) => {
-        this.error = 'Incorrect email or password';
+        this.error = err.message || 'Correo o contraseña incorrectos';
         console.error(err);
       },
     });
@@ -54,18 +47,18 @@ export default class LoginComponent {
   onRegister() {
     // Validaciones simples
     if (!this.nombrer || this.nombrer.trim().length < 3) {
-      this.errorr = 'That name is too short';
+      this.errorr = 'El nombre es muy corto';
       return;
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!this.emailr || !emailPattern.test(this.emailr)) {
-      this.errorr = 'Into a valid email';
+      this.errorr = 'Escribe un correo válido';
       return;
     }
 
     if (!this.passwordr || this.passwordr.length < 6) {
-      this.errorr = 'password must be at least 6 characters long';
+      this.errorr = 'La contraseña debe tener al menos 6 caracteres';
       return;
     }
 
@@ -73,13 +66,14 @@ export default class LoginComponent {
     this.authService
       .register(this.nombrer, this.emailr, this.passwordr)
       .subscribe({
-        next: (res) => {
-          this.authService.saveToken(res.data.user.email);
-          this.userService.setUser({ emailr: this.emailr }, 3600);
-          this.router.navigate(['/Inicio']);
+        next: () => {
+          // Registrarse no autentica: se entra por la pestaña de ingreso
+          this.errorr = '';
+          this.email = this.emailr;
+          this.toggleSignIn();
         },
         error: (err) => {
-          this.errorr = 'Something went wrong during registration';
+          this.errorr = err.message || 'No se pudo completar el registro';
           console.error(err);
         },
       });

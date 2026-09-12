@@ -1,53 +1,62 @@
 // src/app/services/user.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { log } from 'console';
+import { ApiService } from '../core/services/api.service';
+import { SesionService } from '../core/services/sesion.service';
+import { Usuario, Paginado } from '../core/models/intranet.models';
 
+/**
+ * Usuarios de la intranet.
+ *
+ * La sesión vive en SesionService; aquí quedan las consultas al backend.
+ * El token ya no se arma a mano: lo pone el interceptor.
+ */
 @Injectable({
-  providedIn: 'root', // hace que sea singleton, disponible en toda la app
+  providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:7000/api/users';
-  private userData: { id?: number } = {};
-  constructor(private http: HttpClient) {}
+  private api = inject(ApiService);
+  private sesion = inject(SesionService);
 
-  getInformation(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get(`${this.apiUrl}/${this.userData.id}`, { headers });
+  /** Datos del usuario del token */
+  getInformation(): Observable<Usuario> {
+    return this.sesion.refrescar();
   }
 
-  setUser(id: any, tokenExpirySeconds: number) {
-    const expiration = new Date().getTime() + tokenExpirySeconds * 1000; // milisegundos
-    const data = { ...id, expiration };
-    sessionStorage.setItem('userData', JSON.stringify(data));
-    this.userData = id;
-  }
-  //
-  getUser() {
-    console.log('object --> ', this.userData);
-    return this.userData;
+  listar(filtros?: {
+    email?: string;
+    rol?: string;
+    page?: number;
+    limit?: number;
+  }): Observable<Usuario[]> {
+    return this.api.get<Usuario[]>('/users', filtros);
   }
 
-  clearUser() {
-    this.userData = {};
+  obtener(id: number): Observable<Usuario> {
+    return this.api.get<Usuario>(`/users/${id}`);
   }
 
-  loadUser() {
-    const stored = sessionStorage.getItem('userData');
-    if (!stored) return null;
+  actualizar(id: number, datos: Partial<Usuario>): Observable<Usuario> {
+    return this.api.put<Usuario>(`/users/${id}`, datos);
+  }
 
-    const data = JSON.parse(stored);
-    if (new Date().getTime() > data.expiration) {
-      sessionStorage.removeItem('userData');
-      return null;
-    }
+  desactivar(id: number): Observable<void> {
+    return this.api.delete<void>(`/users/${id}`);
+  }
 
-    this.userData = data;
-    return data;
+  setUser(usuario: Usuario): void {
+    this.sesion.guardar(usuario);
+  }
+
+  getUser(): Usuario | null {
+    return this.sesion.usuario();
+  }
+
+  loadUser(): Usuario | null {
+    return this.sesion.usuario();
+  }
+
+  clearUser(): void {
+    this.sesion.limpiar();
   }
 }
