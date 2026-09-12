@@ -1,4 +1,243 @@
-<h1 class="text-2xl font-bold">Bienvenido {{ userName }}</h1>
-<app-carousel></app-carousel>
+<div class="space-y-6">
+  <!-- Saludo -->
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">
+      {{ saludo }}<span *ngIf="nombre()">, {{ nombre() }}</span>
+    </h1>
+    <p class="text-sm text-gray-500">Esto es lo que pasa hoy en Camintra.</p>
+  </div>
 
+  <div *ngIf="cargando()" class="py-12 text-center text-gray-500">
+    Cargando la intranet...
+  </div>
 
+  <div
+    *ngIf="error()"
+    class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+  >
+    {{ error() }}
+  </div>
+
+  <ng-container *ngIf="resumen() as r">
+    <!-- Indicadores -->
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <a
+        routerLink="/comunicados"
+        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+      >
+        <p class="text-xs uppercase tracking-wide text-gray-500">Comunicados</p>
+        <p class="mt-1 text-3xl font-bold text-gray-900">
+          {{ r.indicadores.comunicados_vigentes }}
+        </p>
+        <p
+          *ngIf="r.indicadores.comunicados_no_leidos > 0"
+          class="mt-1 text-xs font-semibold text-blue-600"
+        >
+          {{ r.indicadores.comunicados_no_leidos }} sin leer
+        </p>
+      </a>
+
+      <a
+        routerLink="/directorio"
+        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+      >
+        <p class="text-xs uppercase tracking-wide text-gray-500">
+          Colaboradores
+        </p>
+        <p class="mt-1 text-3xl font-bold text-gray-900">
+          {{ r.indicadores.colaboradores }}
+        </p>
+        <p class="mt-1 text-xs text-gray-500">
+          en {{ r.indicadores.departamentos }} áreas
+        </p>
+      </a>
+
+      <a
+        routerLink="/calendario"
+        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+      >
+        <p class="text-xs uppercase tracking-wide text-gray-500">
+          Eventos próximos
+        </p>
+        <p class="mt-1 text-3xl font-bold text-gray-900">
+          {{ r.indicadores.eventos_proximos }}
+        </p>
+        <p class="mt-1 text-xs text-gray-500">en los próximos 30 días</p>
+      </a>
+
+      <a
+        routerLink="/wiki"
+        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+      >
+        <p class="text-xs uppercase tracking-wide text-gray-500">Documentos</p>
+        <p class="mt-1 text-3xl font-bold text-gray-900">
+          {{ r.indicadores.documentos }}
+        </p>
+        <p class="mt-1 text-xs text-gray-500">publicados en la wiki</p>
+      </a>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <!-- Últimos comunicados -->
+      <div class="lg:col-span-2">
+        <div class="mb-3 flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-gray-900">
+            Últimos comunicados
+          </h2>
+          <a
+            routerLink="/comunicados"
+            class="text-sm text-gray-500 underline hover:text-gray-900"
+          >
+            Ver todos
+          </a>
+        </div>
+
+        <div class="space-y-3">
+          <a
+            *ngFor="let c of r.ultimosComunicados"
+            [routerLink]="['/comunicados', c.id]"
+            class="flex items-start gap-3 rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md"
+            [class.border-blue-300]="!c.leido"
+            [class.border-gray-200]="c.leido"
+          >
+            <span
+              class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
+              [style.background-color]="c.categoria_color || '#9ca3af'"
+            ></span>
+
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-semibold text-gray-900">{{ c.titulo }}</p>
+              <p class="truncate text-sm text-gray-600">{{ c.resumen }}</p>
+              <p class="mt-1 text-xs text-gray-400">
+                {{ c.autor }} &middot;
+                {{ c.publicado_en | date: 'dd MMM yyyy' }}
+              </p>
+            </div>
+
+            <span
+              *ngIf="c.fijado"
+              class="shrink-0 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800"
+            >
+              Fijado
+            </span>
+          </a>
+
+          <p
+            *ngIf="r.ultimosComunicados.length === 0"
+            class="rounded-xl border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500"
+          >
+            Todavía no hay comunicados publicados.
+          </p>
+        </div>
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="space-y-6">
+        <!-- Próximos eventos -->
+        <div>
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Agenda</h2>
+            <a
+              routerLink="/calendario"
+              class="text-sm text-gray-500 underline hover:text-gray-900"
+            >
+              Ver
+            </a>
+          </div>
+
+          <div class="space-y-2">
+            <div
+              *ngFor="let e of r.proximosEventos"
+              class="flex gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm"
+            >
+              <span
+                class="w-1 shrink-0 rounded-full"
+                [style.background-color]="e.color_hex"
+              ></span>
+
+              <div class="min-w-0">
+                <p class="truncate text-sm font-semibold text-gray-900">
+                  {{ e.titulo }}
+                </p>
+                <p class="text-xs text-gray-500">
+                  {{ e.inicio | date: 'dd MMM, HH:mm' }}
+                </p>
+                <p *ngIf="e.lugar" class="truncate text-xs text-gray-400">
+                  {{ e.lugar }}
+                </p>
+              </div>
+            </div>
+
+            <p
+              *ngIf="r.proximosEventos.length === 0"
+              class="rounded-xl border border-dashed border-gray-300 p-4 text-center text-sm text-gray-500"
+            >
+              Sin eventos programados.
+            </p>
+          </div>
+        </div>
+
+        <!-- Distribución por área -->
+        <div>
+          <h2 class="mb-3 text-lg font-semibold text-gray-900">
+            Personas por área
+          </h2>
+
+          <div
+            class="space-y-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+          >
+            <div *ngFor="let d of r.colaboradoresPorDepartamento">
+              <div class="mb-1 flex justify-between text-xs text-gray-600">
+                <span>{{ d.nombre }}</span>
+                <span class="font-semibold">{{ d.total }}</span>
+              </div>
+
+              <div class="h-2 w-full rounded-full bg-gray-100">
+                <div
+                  class="h-2 rounded-full"
+                  [style.width]="anchoBarra(d.total)"
+                  [style.background-color]="d.color_hex"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wiki reciente -->
+        <div>
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Wiki reciente</h2>
+            <a
+              routerLink="/wiki"
+              class="text-sm text-gray-500 underline hover:text-gray-900"
+            >
+              Ver
+            </a>
+          </div>
+
+          <div class="space-y-2">
+            <a
+              *ngFor="let d of r.documentosRecientes"
+              [routerLink]="['/wiki', d.slug]"
+              class="block rounded-xl border border-gray-200 bg-white p-3 shadow-sm transition hover:shadow-md"
+            >
+              <p class="truncate text-sm font-semibold text-gray-900">
+                {{ d.titulo }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ d.categoria }} &middot; {{ d.vistas }} vista(s)
+              </p>
+            </a>
+
+            <p
+              *ngIf="r.documentosRecientes.length === 0"
+              class="rounded-xl border border-dashed border-gray-300 p-4 text-center text-sm text-gray-500"
+            >
+              Sin documentos aún.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
