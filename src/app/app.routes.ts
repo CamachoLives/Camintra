@@ -40,6 +40,11 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'wiki',
+        loadChildren: () =>
+          import('./wiki/wiki.module').then((m) => m.WikiModule),
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
