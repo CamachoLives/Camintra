@@ -33,6 +33,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'calendario',
+        loadChildren: () =>
+          import('./calendario/calendario.module').then(
+            (m) => m.CalendarioModule
+          ),
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./user/user.module').then((m) => m.UserModule),
