@@ -15,6 +15,14 @@
     </button>
   </div>
 
+  <!-- Resultado del guardado: antes solo salia por la consola -->
+  <p *ngIf="mensaje" class="mb-4 rounded bg-green-100 p-3 text-green-800">
+    {{ mensaje }}
+  </p>
+  <p *ngIf="error" class="mb-4 rounded bg-red-100 p-3 text-red-800">
+    {{ error }}
+  </p>
+
   <form class="space-y-4">
     <!-- Logo -->
     <div>
@@ -133,7 +141,7 @@
         class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Cancelar
       </button>
-      <button type="submit" (click)="PlatformCall()" [hidden]="!isEditable"
+      <button type="submit" (click)="PlatformCall()" [hidden]="!isEditable" [disabled]="guardando"
         class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
         Guardar
       </button>
