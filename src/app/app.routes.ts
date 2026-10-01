@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 import { LayoutComponent } from './shared/layout/layout.component';
 
 export const routes: Routes = [
@@ -51,6 +52,7 @@ export const routes: Routes = [
       },
       {
         path: 'configuracion',
+        canActivate: [adminGuard],
         loadChildren: () =>
           import('./configuracion/configuracion.module').then((m) => m.ConfiguracionModule),
       },
