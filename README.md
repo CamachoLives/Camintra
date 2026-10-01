@@ -43,6 +43,33 @@ npm run build        # producción
 npm run serve:ssr:Camintra
 ```
 
+## Pruebas
+
+```bash
+npm test             # modo vigilancia, abre Chrome
+npm run test:ci      # una sola pasada, sin ventana, con cobertura
+```
+
+Las pruebas corren en Karma + Jasmine y no tocan el backend: usan
+`provideHttpClientTesting`, así que se puede ejecutar la suite sin tener
+RestCamintra levantado.
+
+`src/testing/proveedores.ts` reúne los proveedores que casi toda prueba
+necesita (cliente HTTP simulado y router). Una prueba nueva empieza así:
+
+```ts
+import { proveedoresDePrueba } from '../../testing/proveedores';
+
+TestBed.configureTestingModule({ providers: proveedoresDePrueba() });
+```
+
+El orden de ejecución es aleatorio a propósito (`karma.conf.js`): si una
+prueba depende de otra, falla. Para eso está `limpiarAlmacenamiento()`,
+que borra `localStorage` y `sessionStorage` entre casos.
+
+Qué está cubierto hoy: `ApiService`, `SesionService`, el
+`authInterceptor`, los tres guards, el servicio de parametrización y los
+servicios de comunicados, wiki, directorio, calendario y notificaciones.
 ## Configuración
 
 `src/environments/environment.development.ts` apunta a
@@ -55,6 +82,7 @@ quemadas en los servicios.
 ```
 src/app/
   core/              Interceptor, ApiService, SesionService y modelos
+  testing/           Proveedores compartidos para las pruebas
   comunicados/       Listado, detalle y editor
   calendario/        Agenda
   directorio/        Colaboradores
@@ -62,7 +90,7 @@ src/app/
   Inicio/            Portada
   configuracion/     Parametrización y usuarios
   shared/            Layout, sidebar, header, footer
-  guards/            authGuard y publicadorGuard
+  guards/            authGuard, adminGuard y publicadorGuard
 ```
 
 Cada módulo de negocio tiene su servicio, que habla con el backend a

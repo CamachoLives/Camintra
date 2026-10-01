@@ -1,16 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+/* La fuente Montserrat se carga en index.html, no aquí:
+   un @import dentro del CSS de un componente se inlinea y revienta el
+   presupuesto anyComponentStyle del build de producción. */
 
-/* Reset global del body */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 100%;
-}
-
-/* Opcional: que el root y tu wrapper ocupen toda la altura */
-app-root, .login-wrapper {
-  min-height: 100%;
-}
 .login-wrapper {
   position: relative;
   z-index: 1; /* contenido encima del blur */
@@ -36,26 +27,6 @@ app-root, .login-wrapper {
   transform: scale(1.1);
   z-index: -1;
 }
-
-
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.login-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh; /* Ocupa toda la altura */
-  width: 100%;
-  box-sizing: border-box;
-  }
-
-
 
 h1 {
   font-weight: bold;
@@ -85,7 +56,6 @@ a {
   text-decoration: none;
   margin: 15px 0;
 }
-
 
 button {
   border-radius: 20px;
@@ -330,8 +300,6 @@ footer a {
     padding: 10px;
   }
 }
-
-
 
 .outlined-input {
   position: relative;

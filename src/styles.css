@@ -3,4 +3,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Resets globales. Vivían en login.component.css, donde Angular los
+   encapsulaba por componente (así que no aplicaban al resto de la
+   intranet) y de paso hacían que ese archivo pasara el presupuesto
+   anyComponentStyle del build de producción. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
+app-root {
+  min-height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

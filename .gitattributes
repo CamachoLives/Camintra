@@ -1,0 +1,12 @@
+# El repositorio guarda los archivos con LF; sin esto el checkout en
+# Windows los convierte a CRLF y los diffs se llenan de ruido.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
