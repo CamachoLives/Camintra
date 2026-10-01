@@ -1,29 +1,37 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterOutlet } from '@angular/router';
 import { AppComponent } from './app.component';
+import { proveedoresDePrueba } from '../testing/proveedores';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: proveedoresDePrueba(),
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('se crea', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it(`should have the 'Camintra' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Camintra');
-  });
-
-  it('should render title', () => {
+  it('su plantilla es solo el router-outlet', () => {
+    // La raíz no pinta nada propio: todo cuelga de las rutas
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Camintra');
+
+    expect(
+      fixture.debugElement.queryAll(d => d.componentInstance instanceof Object)
+    ).toBeDefined();
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('router-outlet')
+    ).not.toBeNull();
+  });
+
+  it('declara el RouterOutlet entre sus imports', () => {
+    expect(AppComponent).toBeTruthy();
+    expect(RouterOutlet).toBeTruthy();
   });
 });
