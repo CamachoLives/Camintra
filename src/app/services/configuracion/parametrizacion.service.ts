@@ -22,7 +22,6 @@ export interface ParametrizacionPlataforma {
 }
 
 
-
 /** Lo que devuelve la tabla plataforma */
 export interface PlataformaGuardada {
   id: number;
