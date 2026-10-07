@@ -21,6 +21,8 @@ export interface ParametrizacionPlataforma {
   Mantenimiento: boolean | string;
 }
 
+
+
 /** Lo que devuelve la tabla plataforma */
 export interface PlataformaGuardada {
   id: number;
