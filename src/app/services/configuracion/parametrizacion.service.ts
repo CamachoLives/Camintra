@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 
+
 /** Lo que manda el formulario de parametrización */
 export interface ParametrizacionPlataforma {
   logo: string;
