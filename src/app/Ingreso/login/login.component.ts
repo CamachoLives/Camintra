@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
 
 @Component({
   standalone: true,
@@ -28,8 +27,7 @@ export default class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) {}
 
   onLogin() {
