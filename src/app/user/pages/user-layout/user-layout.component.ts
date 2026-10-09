@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -8,6 +8,8 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './user-layout.component.css',
 })
 export class UserLayoutComponent {
+  private router = inject(Router);
+
   Name = 'Cristian Camacho';
   Company = 'Incocredito';
   Group = 'Desarrollo de la Tecnologia';
@@ -18,7 +20,6 @@ export class UserLayoutComponent {
 
   photo = 'https://github.com/CamachoLives.png';
   userId = 'Cris';
-  constructor(private router: Router) {}
 
   editarUsuario() {
     this.router.navigate(['user/user-edicion']);

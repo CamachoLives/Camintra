@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 import { SesionService } from '../core/services/sesion.service';
-import { Usuario, Paginado } from '../core/models/intranet.models';
+import { Usuario } from '../core/models/intranet.models';
 
 /**
  * Usuarios de la intranet.

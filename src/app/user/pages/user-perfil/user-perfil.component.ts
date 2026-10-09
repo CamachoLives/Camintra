@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,6 +12,8 @@ import { CalendarioComponent  } from '../../../ComponentesGlobales/calendario/ca
   styleUrl: './user-perfil.component.css',
 })
 export class UserPerfilComponent {
+  private router = inject(Router);
+
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -28,7 +30,6 @@ export class UserPerfilComponent {
 
   photo = 'https://github.com/CamachoLives.png';
   userId = 'Cris';
-  constructor(private router: Router) {}
 
   editarUsuario() {
     this.router.navigate(['user/user-edicion']);

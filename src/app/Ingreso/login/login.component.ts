@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -12,6 +12,9 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export default class LoginComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   email = '';
   password = '';
   error = '';
@@ -25,10 +28,6 @@ export default class LoginComponent {
   // Variable para el efecto dinámico
   rightPanelActive = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
 
   onLogin() {
     this.authService.login(this.email, this.password).subscribe({

@@ -1,7 +1,7 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, CanActivateFn } from '@angular/router';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { SesionService } from '../core/services/sesion.service';
 
 /**

@@ -54,6 +54,10 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {
+      // Migrar *ngIf/*ngFor a @if/@for toca 115 puntos en 20 plantillas:
+      // es un cambio aparte, no algo que deba bloquear el linter hoy.
+      '@angular-eslint/template/prefer-control-flow': 'warn',
+
       // Las plantillas vienen con mucho que corregir en accesibilidad:
       // se deja como aviso para irlo arreglando pantalla por pantalla.
       '@angular-eslint/template/click-events-have-key-events': 'warn',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-layout',
   imports: [RouterModule],
