@@ -1,65 +1,132 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { SesionService } from '../../../core/services/sesion.service';
+import { Usuario, Rol } from '../../../core/models/intranet.models';
 
+/**
+ * Panel de usuarios.
+ *
+ * Mostraba dos filas inventadas en código -- Cristian Camacho de MiEmpresa
+ * y Ana Gómez de TechCorp -- con columnas que la intranet no tiene
+ * (empresa, cédula, edad, grupo). "Editar" abría un alert() y "Eliminar"
+ * borraba del array local, así que al recargar la página volvía todo.
+ *
+ * Ahora lee /api/users, que pagina en el servidor, y las acciones son las
+ * que el backend realmente permite: cambiar el rol y desactivar (baja
+ * lógica, porque el usuario es autor de comunicados y documentos).
+ */
 @Component({
   selector: 'app-usuarios',
-  standalone:true,
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+  styleUrl: './usuarios.component.css',
 })
+export class UsuariosComponent implements OnInit {
+  private usuarios = inject(UserService);
+  private sesion = inject(SesionService);
 
+  readonly roles: Rol[] = ['admin', 'editor', 'colaborador'];
 
-export class UsuariosComponent {
+  items: Usuario[] = [];
+  total = 0;
+  pagina = 1;
+  readonly porPagina = 10;
+  totalPaginas = 1;
 
-data = [
-    { nombres: 'Cristian', apellidos: 'Camacho', empresa: 'MiEmpresa', rol: 'Ingeniero', grupo: 'Desarrollo', cedula: '123456789', telefono: '3001234567', correo: 'correo@empresa.com', cargo: 'Senior', edad: 30, activo: 'Activo' },
-    { nombres: 'Ana', apellidos: 'Gómez', empresa: 'TechCorp', rol: 'Analista', grupo: 'QA', cedula: '987654321', telefono: '3109876543', correo: 'ana@techcorp.com', cargo: 'Junior', edad: 25, activo: 'Activo' },
-    // Agrega más registros
-  ];
+  busqueda = '';
+  cargando = false;
+  error = '';
+  mensaje = '';
 
-  searchTerm = '';
-  filteredData = [...this.data];
-  paginatedData: any[] = [];
-  rowsPerPage = 5;
-  currentPage = 1;
-  totalPagesArray: number[] = [];
-
-  constructor() {
-    this.actualizarPaginacion();
+  /** Para no dejar que un admin se quite su propio rol por accidente */
+  get miId(): number | null {
+    return this.sesion.usuario()?.id ?? null;
   }
 
-  filtrarDatos() {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredData = this.data.filter(item =>
-      Object.values(item).some(val => String(val).toLowerCase().includes(term))
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  ngOnInit(): void {
+    this.cargar();
+  }
+
+  cargar(): void {
+    this.cargando = true;
+    this.error = '';
+
+    this.usuarios
+      .listar({
+        email: this.busqueda.trim() || undefined,
+        page: this.pagina,
+        limit: this.porPagina,
+      })
+      .subscribe({
+        next: pagina => {
+          this.items = pagina.items;
+          this.total = pagina.total;
+          this.totalPaginas = pagina.totalPaginas;
+          this.cargando = false;
+        },
+        error: (err: Error) => {
+          this.error = err.message;
+          this.cargando = false;
+        },
+      });
+  }
+
+  // La búsqueda la resuelve el servidor: filtrar en el navegador solo
+  // encontraría coincidencias dentro de la página que ya se trajo.
+  buscar(): void {
+    this.pagina = 1;
+    this.cargar();
+  }
+
+  cambiarPagina(pagina: number): void {
+    if (pagina === this.pagina) return;
+
+    this.pagina = pagina;
+    this.cargar();
+  }
+
+  cambiarRol(usuario: Usuario, rol: Rol): void {
+    if (rol === usuario.rol) return;
+
+    this.aplicar(
+      this.usuarios.actualizar(usuario.id, { rol }),
+      `Rol de ${usuario.nombre} actualizado a ${rol}`
     );
-    this.currentPage = 1;
-    this.actualizarPaginacion();
   }
 
-  actualizarPaginacion() {
-    const totalPages = Math.ceil(this.filteredData.length / this.rowsPerPage);
-    this.totalPagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
-    this.paginatedData = this.filteredData.slice((this.currentPage - 1) * this.rowsPerPage, this.currentPage * this.rowsPerPage);
+  desactivar(usuario: Usuario): void {
+    this.aplicar(
+      this.usuarios.desactivar(usuario.id),
+      `${usuario.nombre} quedó desactivado`
+    );
   }
 
-  cambiarPagina(page: number) {
-    this.currentPage = page;
-    this.actualizarPaginacion();
+  reactivar(usuario: Usuario): void {
+    this.aplicar(
+      this.usuarios.actualizar(usuario.id, { activo: true }),
+      `${usuario.nombre} quedó activo`
+    );
   }
 
-  editar(item: any) {
-    alert(`Editar: ${item.nombres} ${item.apellidos}`);
-    // Aquí puedes abrir un modal o navegar a un formulario
-  }
+  // Las tres acciones hacen lo mismo con la respuesta: avisar y recargar
+  private aplicar(peticion: Observable<unknown>, exito: string): void {
+    this.mensaje = '';
+    this.error = '';
 
-  eliminar(item: any) {
-    if (confirm(`¿Eliminar a ${item.nombres} ${item.apellidos}?`)) {
-      this.data = this.data.filter(d => d !== item);
-      this.filtrarDatos();
-    }
+    peticion.subscribe({
+      next: () => {
+        this.mensaje = exito;
+        this.cargar();
+      },
+      error: (err: Error) => (this.error = err.message),
+    });
   }
-
 }

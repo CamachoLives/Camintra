@@ -3,7 +3,14 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 import { SesionService } from '../core/services/sesion.service';
-import { Usuario } from '../core/models/intranet.models';
+import { Usuario, Paginado } from '../core/models/intranet.models';
+
+export interface FiltrosUsuarios {
+  email?: string;
+  rol?: string;
+  page?: number;
+  limit?: number;
+}
 
 /**
  * Usuarios de la intranet.
@@ -23,13 +30,9 @@ export class UserService {
     return this.sesion.refrescar();
   }
 
-  listar(filtros?: {
-    email?: string;
-    rol?: string;
-    page?: number;
-    limit?: number;
-  }): Observable<Usuario[]> {
-    return this.api.get<Usuario[]>('/users', filtros);
+  /** El endpoint responde el sobre paginado, no un array pelado */
+  listar(filtros?: FiltrosUsuarios): Observable<Paginado<Usuario>> {
+    return this.api.get<Paginado<Usuario>>('/users', filtros);
   }
 
   obtener(id: number): Observable<Usuario> {
