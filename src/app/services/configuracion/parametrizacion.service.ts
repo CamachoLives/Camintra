@@ -5,7 +5,6 @@ import { ApiService } from '../../core/services/api.service';
 
 
 
-
 /** Lo que manda el formulario de parametrización */
 export interface ParametrizacionPlataforma {
   logo: string;
